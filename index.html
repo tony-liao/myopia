@@ -20,17 +20,18 @@
 		
 	// 	isvertical=isshield;
 		
-	// 	// if(isshield){
-	// 	// document.getElementById("shieldstatus").innerHTML="shield on";
-	// 	// }
-	// 	// else{
-	// 	// document.getElementById("shieldstatus").innerHTML="shield off	";
-	// 	// }
-
+		
 	// })
 
 	socket.on('shield', function(isshield){
-		document.getElementById("shieldstatus").innerHTML=isshield;
+		
+		if(isshield){
+		document.getElementById("shieldstatus").innerHTML="shield on";
+		}
+		else{
+		document.getElementById("shieldstatus").innerHTML="shield off	";
+		}
+
 	})
 
 	</script>

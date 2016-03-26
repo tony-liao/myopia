@@ -33,8 +33,7 @@ io.on('connection', function(socket){
     Myo.setLockingPolicy("none");
     addEvents(myMyo);
 
-    socket.emit('shield', isvertical&&isshield);
-    console.log(isvertical&&isshield);
+   // socket.emit('shield', isvertical&&isshield);
   });
 
   var addEvents = function(myo){  
@@ -53,7 +52,7 @@ io.on('connection', function(socket){
     })
 
     myo.on('imu', function(data){
-      if(data.accelerometer.x < -0.85)
+      if(data.accelerometer.x < -0.8)
         isvertical=true;
       else
         isvertical=false;
@@ -74,9 +73,11 @@ io.on('connection', function(socket){
                                  +"<br> " + Math.round(data.accelerometer.z*1000)/1000;
       socket.emit('raw data', message);
 
-     // socket.emit('shield', isvertical);
+      socket.emit('shield', isvertical&&isfist);
     })    
+
   }
+
 
   Myo.connect();
 
