@@ -19,11 +19,13 @@ io.on('connection', function(socket){
   var test;
 
   Myo.onError = function () {  
+
     console.log("Woah, couldn't connect to Myo Connect");
     message="Woah, couldn't connect to Myo Connect";
   }
 
-  Myo.on('connected', function(){  
+
+  Myo.on('connected', function(){
     console.log("connected");
 
     message="connected";
