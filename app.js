@@ -10,65 +10,75 @@ app.get('/', function(req, res){
 
 io.on('connection', function(socket){
 
-
-
   //myo stuff inside the connection
-var Myo = require('myo');  
+  var Myo = require('myo');  
   var message='dickbutt';
+  var isfist=false;
+  var isvertical=false;
+  var isshield=false;
+  var test;
+
   Myo.onError = function () {  
     console.log("Woah, couldn't connect to Myo Connect");
     message="Woah, couldn't connect to Myo Connect";
   }
 
   Myo.on('connected', function(){  
-    console.log("TONY EATS ASS");
+    console.log("connected");
 
     message="connected";
     myMyo = this;
-
+    Myo.setLockingPolicy("none");
     addEvents(myMyo);
+
+    socket.emit('shield', isvertical&&isshield);
+    console.log(isvertical&&isshield);
   });
 
   var addEvents = function(myo){  
-
     myo.on('fist', function(){
-      console.log('fistin yer mum');
-      message="fistin yer mum";
-
-      socket.emit('chat message', message);
+      console.log('fist');
+      message="fist";
+      isfist=true;
+      socket.emit('raw data', message);
 
     })
 
-    myo.on('fingers_spread', function(){
-      console.log('spreadin yer mum');
-
-      message="spreadin yer mum";
-
-      socket.emit('chat message', message);
+    myo.on('pose_off', function(fist_off){
+      console.log('fist off');
+      isfist=false;
+      socket.emit('raw data', "fist off");
     })
 
-    myo.on('wave_in', function(){
-      console.log('spreadin yer mum');
+    myo.on('imu', function(data){
+      if(data.accelerometer.x < -0.85)
+        isvertical=true;
+      else
+        isvertical=false;
 
-      message="in ye go";
+      
+      //console.log(isvertical);
+      message="orientation: w x y z:" +"<br> " + Math.round(data.orientation.w*1000)/1000
+                                      + "<br> " + Math.round(data.orientation.x*1000)/1000
+                                      + "<br> " + Math.round(data.orientation.y*1000) /1000
+                                      + "<br> " + Math.round(data.orientation.z*1000)/1000;
 
-      socket.emit('chat message', message);
-    })
+      message+="<br>gyroscope: x y z:" +"<br> " + Math.round(data.gyroscope.x*1000)/1000
+                                  +"<br> " + Math.round(data.gyroscope.y*1000)/1000
+                                  +"<br> " + Math.round(data.gyroscope.z*1000)/1000;
 
-    myo.on('wave_out', function(){
-      console.log('spreadin yer mum');
+      message+="<br>accelorometer: x y z:" +"<br> " + Math.round(data.accelerometer.x*1000)/1000
+                                 +"<br> " + Math.round(data.accelerometer.y*1000)/1000
+                                 +"<br> " + Math.round(data.accelerometer.z*1000)/1000;
+      socket.emit('raw data', message);
 
-      message="out ye com";
-
-      socket.emit('chat message', message);
-    })
+     // socket.emit('shield', isvertical);
+    })    
   }
 
   Myo.connect();
 
-  socket.on('chat message', function(msg){
-    io.emit('chat message', msg);
-  });
+  
 });
 
 http.listen(3000, function(){
