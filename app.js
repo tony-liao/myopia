@@ -11,14 +11,14 @@ app.get('/', function(req, res){
 io.on('connection', function(socket){
 
   //myo stuff inside the connection
-  var Myo = require('myo');  
+  var Myo = require('myo');
   var message='dickbutt';
   var isfist=false;
   var isvertical=false;
   var isshield=false;
   var test;
 
-  Myo.onError = function () {  
+  Myo.onError = function () {
 
     console.log("Woah, couldn't connect to Myo Connect");
     message="Woah, couldn't connect to Myo Connect";
@@ -36,7 +36,7 @@ io.on('connection', function(socket){
    // socket.emit('shield', isvertical&&isshield);
   });
 
-  var addEvents = function(myo){  
+  var addEvents = function(myo){
     myo.on('fist', function(){
       console.log('fist');
       message="fist";
@@ -57,7 +57,6 @@ io.on('connection', function(socket){
       else
         isvertical=false;
 
-      
       //console.log(isvertical);
       message="orientation: w x y z:" +"<br> " + Math.round(data.orientation.w*1000)/1000
                                       + "<br> " + Math.round(data.orientation.x*1000)/1000
@@ -74,14 +73,9 @@ io.on('connection', function(socket){
       socket.emit('raw data', message);
 
       socket.emit('shield', isvertical&&isfist);
-    })    
-
+    });
   }
-
-
   Myo.connect();
-
-  
 });
 
 http.listen(3000, function(){
