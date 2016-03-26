@@ -13,15 +13,15 @@ io.on('connection', function(socket){
 
 
   //myo stuff inside the connection
-var Myo = require('myo');  
-  var message='dickbutt';
-  Myo.onError = function () {  
+var Myo = require('myo');
+  var message='Hello world..?';
+  Myo.onError = function () {
     console.log("Woah, couldn't connect to Myo Connect");
     message="Woah, couldn't connect to Myo Connect";
   }
 
-  Myo.on('connected', function(){  
-    console.log("TONY EATS ASS");
+  Myo.on('connected', function(){
+    console.log("connectededed");
 
     message="connected";
     myMyo = this;
@@ -29,26 +29,26 @@ var Myo = require('myo');
     addEvents(myMyo);
   });
 
-  var addEvents = function(myo){  
+  var addEvents = function(myo){
 
     myo.on('fist', function(){
-      console.log('fistin yer mum');
-      message="fistin yer mum";
+      console.log('fist');
+      message="fist";
 
       socket.emit('chat message', message);
 
     })
 
     myo.on('fingers_spread', function(){
-      console.log('spreadin yer mum');
+      console.log('spread');
 
-      message="spreadin yer mum";
+      message="spread";
 
       socket.emit('chat message', message);
     })
 
     myo.on('wave_in', function(){
-      console.log('spreadin yer mum');
+      console.log('in');
 
       message="in ye go";
 
@@ -56,7 +56,7 @@ var Myo = require('myo');
     })
 
     myo.on('wave_out', function(){
-      console.log('spreadin yer mum');
+      console.log('out');
 
       message="out ye com";
 
