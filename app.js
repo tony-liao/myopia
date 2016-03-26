@@ -8,6 +8,14 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
+app.get('/public/javascripts/three.min.js', function(req, res){
+  res.sendFile(__dirname + '/public/javascripts/three.min.js');
+});
+
+app.get('/threeRender.js', function(req, res){
+  res.sendFile(__dirname + '/threeRender.js');
+});
+
 io.on('connection', function(socket){
 
   //myo stuff inside the connection
