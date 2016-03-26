@@ -57,8 +57,15 @@ app.use(function(err, req, res, next) {
   });
 });
 
+
+
+//Myo testing
 Myo.on('connected', function(){
   console.log('myo connected');
+});
+
+Myo.on('synced', function(){
+  console.log('myo synced'); //Doesn't work for some reason
 });
 
 Myo.on('fist', function(){
