@@ -1,5 +1,5 @@
 console.log('running');
-var socket = io();
+//var socket = io();
 // set the scene size
 var WIDTH = window.innerWidth-80,
   HEIGHT = window.innerHeight-45;
@@ -82,8 +82,14 @@ function render() {
 
 render();
 
-
 socket.on('orientation', function(o){
   sphere.position.x = o.z*-320;
   sphere.position.y = o.y*180;
+});
+
+$(window).keypress(function (e){
+  if(e.keyCode == 32){ //spacebar
+    console.log('attempting to zero');
+    socket.emit('zero');
+  }
 });

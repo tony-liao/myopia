@@ -18,9 +18,8 @@
 	</div>
 
 	<script>
-	/*var socket = io();
-
-	socket.on('raw data', function(msg){
+	var socket = io.connect('http://localhost:3000');
+	/*socket.on('raw data', function(msg){
 		document.getElementById("status").innerHTML=msg;
 	});
 
@@ -30,6 +29,7 @@
 		else
 			document.getElementById("shieldstatus").innerHTML="shield off	";
 	});*/
+
 	</script>
 	<script src="public/javascripts/three.min.js"></script>
 	<script src="threeRender.js"></script>

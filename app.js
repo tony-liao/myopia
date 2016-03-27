@@ -16,11 +16,11 @@ app.get('/threeRender.js', function(req, res){
   res.sendFile(__dirname + '/threeRender.js');
 });
 
-io.on('connection', function(socket){
+io.sockets.on('connection', function(socket){
 
   //myo stuff inside the connection
   var Myo = require('myo');
-  var message='dickbutt';
+  var message='';
   var isfist=false;
   var isvertical=false;
   var isshield=false;
@@ -99,6 +99,11 @@ io.on('connection', function(socket){
         console.log("shieldup")
       }
     })
+
+    socket.on('zero', function(){
+      console.log('zeroing');
+      myo.zeroOrientation();
+    });
 
   }
   Myo.connect();
