@@ -86,6 +86,7 @@ io.on('connection', function(socket){
       socket.emit('raw data', message);
 
       socket.emit('shield', isvertical&&isfist);
+      socket.emit('orientation', data.orientation);
 
 
       if(data.gyroscope.z>200){
@@ -97,7 +98,7 @@ io.on('connection', function(socket){
       if(isvertical&&isfist){
         console.log("shieldup")
       }
-    })    
+    })
 
   }
   Myo.connect();

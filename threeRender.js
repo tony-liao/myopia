@@ -1,7 +1,8 @@
 console.log('running');
+var socket = io();
 // set the scene size
-var WIDTH = 400,
-  HEIGHT = 300;
+var WIDTH = window.innerWidth-80,
+  HEIGHT = window.innerHeight-45;
 
 // set some camera attributes
 var VIEW_ANGLE = 45,
@@ -80,3 +81,9 @@ function render() {
 }
 
 render();
+
+
+socket.on('orientation', function(o){
+  sphere.position.x = o.z*-320;
+  sphere.position.y = o.y*180;
+});
