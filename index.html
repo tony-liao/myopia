@@ -2,38 +2,33 @@
 <html>
 <head>
 	<title>Wherehecks</title>
-
+	<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+	<script src="http://code.jquery.com/jquery-2.2.2.min.js"></script>
+	<style>
+		div{margin: 0;}
+		canvas{width: 100%; height: 100%;}
+	</style>
 </head>
 <body>
-		<p id="status"></p>
-		<p id="shieldstatus">Shield status</p>
-	<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-	<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+	<p id="status"></p>
+	<p id="shieldstatus">Shield status</p>
+
 	<script>
 	var socket = io();
-	var isfist=false, isvertical=false, isshield=false;
+
 	socket.on('raw data', function(msg){
 		document.getElementById("status").innerHTML=msg;
 	});
 
-	// socket.on('vertical', function(vert){
-		
-	// 	isvertical=isshield;
-		
-		
-	// })
-
 	socket.on('shield', function(isshield){
-		
-		if(isshield){
-		document.getElementById("shieldstatus").innerHTML="shield on";
-		}
-		else{
-		document.getElementById("shieldstatus").innerHTML="shield off	";
-		}
-
-	})
-
+		if(isshield)
+			document.getElementById("shieldstatus").innerHTML="shield on";
+		else
+			document.getElementById("shieldstatus").innerHTML="shield off	";
+	});
 	</script>
+	<div id="container"></div>
+	<script src="public/javascripts/three.min.js"></script>
+	<script src="threeRender.js"></script>
 </body>
 </html>

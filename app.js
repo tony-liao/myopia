@@ -8,17 +8,25 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
+app.get('/public/javascripts/three.min.js', function(req, res){
+  res.sendFile(__dirname + '/public/javascripts/three.min.js');
+});
+
+app.get('/threeRender.js', function(req, res){
+  res.sendFile(__dirname + '/threeRender.js');
+});
+
 io.on('connection', function(socket){
 
   //myo stuff inside the connection
-  var Myo = require('myo');  
+  var Myo = require('myo');
   var message='dickbutt';
   var isfist=false;
   var isvertical=false;
   var isshield=false;
   var Wsum=0; //angular velocity sum
 
-  Myo.onError = function () {  
+  Myo.onError = function () {
 
     console.log("Woah, couldn't connect to Myo Connect");
     message="Woah, couldn't connect to Myo Connect";
@@ -36,7 +44,7 @@ io.on('connection', function(socket){
    // socket.emit('shield', isvertical&&isshield);
   });
 
-  var addEvents = function(myo){  
+  var addEvents = function(myo){
     myo.on('fist', function(){
       console.log('fist');
       isfist=true;
@@ -59,8 +67,8 @@ io.on('connection', function(socket){
         isvertical=true;
       else
         isvertical=false;
-
       Wsum = Math.round((data.gyroscope.x+data.gyroscope.y+data.gyroscope.z)*1000)/1000;
+
       //console.log(isvertical);
       message="orientation: w x y z:" +"<br> " + Math.round(data.orientation.w*100)/100
                                       + "<br> " + Math.round(data.orientation.x*100)/100
@@ -79,6 +87,7 @@ io.on('connection', function(socket){
 
       socket.emit('shield', isvertical&&isfist);
 
+
       if(data.gyroscope.z>200){
         console.log("moveleft");
       }
@@ -91,11 +100,7 @@ io.on('connection', function(socket){
     })    
 
   }
-
-
   Myo.connect();
-
-  
 });
 
 http.listen(3000, function(){
