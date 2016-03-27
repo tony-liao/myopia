@@ -39,7 +39,7 @@ renderer.setSize(WIDTH, HEIGHT);
 $container.append(renderer.domElement);
 
 // set up the sphere vars
-var radius = 50,
+/*var radius = 50,
     segments = 16,
     rings = 16;
 
@@ -62,6 +62,27 @@ var sphere = new THREE.Mesh(
 
 // add the sphere to the scene
 scene.add(sphere);
+*/
+
+// instantiate a loader
+var loader = new THREE.JSONLoader();
+
+var sword;
+// load a resource
+loader.load(
+	// resource URL
+	'sword',
+	// Function when resource is loaded
+	function ( geometry, materials ) {
+		var material = new THREE.MultiMaterial( materials );
+		sword = new THREE.Mesh( geometry, material );
+    sword.scale.set(0.3,0.3,0.3);
+    sword.position.set(0,0,0);
+    sword.rotation.z = 1.57;
+    sword.rotation.x = -1.57;
+		scene.add(sword);
+	}
+);
 
 // create a point light
 var pointLight =
@@ -83,8 +104,10 @@ function render() {
 render();
 
 socket.on('orientation', function(o){
-  sphere.position.x = o.z*-400;
-  sphere.position.y = o.y*180;
+  sword.position.x = o.z*-400;
+  sword.position.y = o.y*180;
+  sword.rotation.x = Math.atan(sword.position.y/200);
+  sword.rotation.y = Math.atan(sword.position.x/200);
 });
 
 $(window).keypress(function (e){
