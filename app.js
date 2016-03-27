@@ -16,7 +16,7 @@ io.on('connection', function(socket){
   var isfist=false;
   var isvertical=false;
   var isshield=false;
-  var test;
+  var Wsum=0; //angular velocity sum
 
   Myo.onError = function () {  
 
@@ -39,14 +39,17 @@ io.on('connection', function(socket){
   var addEvents = function(myo){  
     myo.on('fist', function(){
       console.log('fist');
-      message="fist";
       isfist=true;
-      socket.emit('raw data', message);
+
+    })
+
+    myo.on('wave_out', function(){
+      console.log('attack');
 
     })
 
     myo.on('pose_off', function(fist_off){
-      console.log('fist off');
+      //console.log('fist off');
       isfist=false;
       socket.emit('raw data', "fist off");
     })
@@ -57,23 +60,34 @@ io.on('connection', function(socket){
       else
         isvertical=false;
 
-      
+      Wsum = Math.round((data.gyroscope.x+data.gyroscope.y+data.gyroscope.z)*1000)/1000;
       //console.log(isvertical);
-      message="orientation: w x y z:" +"<br> " + Math.round(data.orientation.w*1000)/1000
-                                      + "<br> " + Math.round(data.orientation.x*1000)/1000
-                                      + "<br> " + Math.round(data.orientation.y*1000) /1000
-                                      + "<br> " + Math.round(data.orientation.z*1000)/1000;
+      message="orientation: w x y z:" +"<br> " + Math.round(data.orientation.w*100)/100
+                                      + "<br> " + Math.round(data.orientation.x*100)/100
+                                      + "<br> " + Math.round(data.orientation.y*100) /100
+                                      + "<br> " + Math.round(data.orientation.z*100)/100;
 
       message+="<br>gyroscope: x y z:" +"<br> " + Math.round(data.gyroscope.x*1000)/1000
                                   +"<br> " + Math.round(data.gyroscope.y*1000)/1000
-                                  +"<br> " + Math.round(data.gyroscope.z*1000)/1000;
+                                  +"<br> " + Math.round(data.gyroscope.z*1000)/1000
+                                  +"<br> SUM: " + Wsum;
 
-      message+="<br>accelorometer: x y z:" +"<br> " + Math.round(data.accelerometer.x*1000)/1000
-                                 +"<br> " + Math.round(data.accelerometer.y*1000)/1000
-                                 +"<br> " + Math.round(data.accelerometer.z*1000)/1000;
+      message+="<br>accelorometer: x y z:" +"<br> " + Math.round(data.accelerometer.x*100)/100
+                                 +"<br> " + Math.round(data.accelerometer.y*100)/100
+                                 +"<br> " + Math.round(data.accelerometer.z*100)/100;
       socket.emit('raw data', message);
 
       socket.emit('shield', isvertical&&isfist);
+
+      if(data.gyroscope.z>200){
+        console.log("moveleft");
+      }
+      if(data.gyroscope.z<-200){
+        console.log("move right");
+      }
+      if(isvertical&&isfist){
+        console.log("shieldup")
+      }
     })    
 
   }
