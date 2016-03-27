@@ -83,7 +83,7 @@ function render() {
 render();
 
 socket.on('orientation', function(o){
-  sphere.position.x = o.z*-320;
+  sphere.position.x = o.z*-400;
   sphere.position.y = o.y*180;
 });
 
